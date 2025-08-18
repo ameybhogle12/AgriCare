@@ -17,6 +17,14 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    buildFeatures{
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.3"
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -37,7 +45,13 @@ android {
 
 dependencies {
 
-    implementation(libs.androidx.core.ktx)
+    implementation(platform("androidx.compose:compose-bom:2024.06.00"))
+    implementation("androidx.compose.ui:ui")
+    implementation("androidx.compose.material3:material3")
+    implementation("androidx.compose.ui:ui-tooling-preview")
+    implementation(libs.androidx.material3)
+    debugImplementation("androidx.compose.ui:ui-tooling")
+    implementation("androidx.navigation:navigation-compose:2.7.7")
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
