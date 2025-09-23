@@ -3,13 +3,19 @@ package amey.bhogle.agricare
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur // Import for the blur modifier
@@ -82,42 +88,74 @@ fun HealthTipsScreen() {
 
 @Composable
 fun HealthTipCard(tip: HealthTip) {
+    var expanded by remember { mutableStateOf(false) }
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 6.dp)
-            .blur(radius = 10.dp) // Apply blur directly to the Card
-            .clip(RoundedCornerShape(8.dp)), // Clip to shape AFTER blur, if you want rounded blur edges
+            .clickable { expanded = !expanded }, // toggle expand on click
         elevation = CardDefaults.cardElevation(6.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.Transparent) // Card itself remains transparent to show blur
+        colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {
-        // Now, add a semi-transparent background *inside* the Card, but NOT blurred
-        Box(
+        Column(
             modifier = Modifier
-                .fillMaxSize()
-                .background(Color.White.copy(alpha = 0.3f)) // Semi-transparent overlay for the frosted look
-                .padding(12.dp) // Padding for the content
+                .padding(12.dp)
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.Start
         ) {
             Row(
+                verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
-                verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Image(
                     painter = painterResource(id = tip.imageRes),
                     contentDescription = tip.title,
-                    modifier = Modifier.size(165.dp)
+                    modifier = Modifier
+                        .size(70.dp)
+                        .clip(RoundedCornerShape(8.dp))
                 )
 
-                Column {
+                Column(
+                    modifier = Modifier.weight(1f)
+                ) {
                     Text(
                         text = tip.title,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.Black
                     )
+                    Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = tip.description,
                         fontSize = 14.sp,
+                        color = Color.DarkGray,
+                        maxLines = if (expanded) Int.MAX_VALUE else 1 // show 1 line before expand
+                    )
+                }
+            }
+
+            // Expanded section with smooth animation
+            AnimatedVisibility(visible = expanded) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 12.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Image(
+                        painter = painterResource(id = tip.imageRes),
+                        contentDescription = tip.title,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(200.dp)
+                            .clip(RoundedCornerShape(12.dp))
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = tip.description,
+                        fontSize = 15.sp,
                         color = Color.Black
                     )
                 }
@@ -125,6 +163,8 @@ fun HealthTipCard(tip: HealthTip) {
         }
     }
 }
+
+
 
 @Composable
 fun BottomNavBar() {
