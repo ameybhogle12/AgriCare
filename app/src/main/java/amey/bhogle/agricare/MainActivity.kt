@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -43,6 +44,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,7 +56,20 @@ class MainActivity : AppCompatActivity() {
         setContent {
             MaterialTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    HomeScreen()
+                    val navController = rememberNavController() // create navController
+
+                    NavHost(
+                        navController = navController,
+                        startDestination = "home" // default screen
+                    ) {
+                        composable("home") {
+                            HomeScreen(navController)
+                        }
+                        composable("suggestion") {
+                            SmartSuggestions(navController)
+                        }
+                        // later you can add farmingTips, healthTips, etc.
+                    }
                 }
             }
         }
@@ -59,10 +77,18 @@ class MainActivity : AppCompatActivity() {
 }
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(navController: NavController) {
     Scaffold(
         bottomBar = {
-            BottomNavBar(selectedItem = "Home") {  }
+            BottomNavBar(selectedItem = "Home") { selected ->
+                when (selected) {
+                    "Home" -> navController.navigate("home")
+                    "Suggest" -> navController.navigate("suggestion")
+                    "Language" -> navController.navigate("language")
+                    "Help" -> navController.navigate("help")
+                    "Settings" -> navController.navigate("settings")
+                }
+            }
         }
     ) { innerPadding ->
         Box(modifier = Modifier.fillMaxSize()
@@ -121,7 +147,9 @@ fun HomeScreen() {
                 ) {
 
                     ElevatedButton(
-                        onClick = { /* Handle Smart Suggestions */ },
+                        onClick = {
+                            navController.navigate("suggestion") // ✅ navigate to SuggestionScreen
+                        },
                         modifier = Modifier
                             .fillMaxWidth(0.8f)
                             .padding(top = 8.dp)
@@ -312,7 +340,7 @@ fun BottomNavBar(selectedItem: String, onItemSelected: (String) -> Unit){
 @Composable
 fun DefaultPreview() {
     MaterialTheme {
-        HomeScreen()
+        HomeScreen(navController = rememberNavController())
     }
 }
 
