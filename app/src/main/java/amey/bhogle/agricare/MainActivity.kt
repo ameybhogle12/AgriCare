@@ -32,6 +32,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,6 +49,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,6 +59,15 @@ class MainActivity : AppCompatActivity() {
             MaterialTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
                     val navController = rememberNavController() // create navController
+                    val systemUiController = rememberSystemUiController()
+                    val useDarkIcons = false // white text/icons on status bar
+
+                    SideEffect {
+                        systemUiController.setStatusBarColor(
+                            color = Color(0xFF4CAF50), //same green as your header
+                            darkIcons = useDarkIcons
+                        )
+                    }
 
                     NavHost(
                         navController = navController,
@@ -67,6 +78,9 @@ class MainActivity : AppCompatActivity() {
                         }
                         composable("suggestion") {
                             SmartSuggestions(navController)
+                        }
+                        composable("health_tips"){
+                            HealthTipsScreen(navController)
                         }
                         // later you can add farmingTips, healthTips, etc.
                     }
@@ -148,7 +162,7 @@ fun HomeScreen(navController: NavController) {
 
                     ElevatedButton(
                         onClick = {
-                            navController.navigate("suggestion") // ✅ navigate to SuggestionScreen
+                            navController.navigate("suggestion") // navigate to SuggestionScreen
                         },
                         modifier = Modifier
                             .fillMaxWidth(0.8f)
@@ -169,7 +183,9 @@ fun HomeScreen(navController: NavController) {
                     )
 
                     ElevatedButton(
-                        onClick = { /* Handle Farming Tips */ },
+                        onClick = {
+                            navController.navigate("health_tips") // navigate to HealthTips
+                        },
                         modifier = Modifier
                             .fillMaxWidth(0.8f)
                             .padding(top = 8.dp)
@@ -278,65 +294,9 @@ fun NewsCarousel() {
 
 /******************************************************/
 //Bottom Navigation Bar
-@Composable
-fun BottomNavBar(selectedItem: String, onItemSelected: (String) -> Unit){
-    val  items = listOf("Language", "Home", "Suggest", "Help", "Settings")
 
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        .clip(RoundedCornerShape(topStart = 18.dp, topEnd = 18.dp)) // Curved corners
-        .background(Color(0xFF2F6138))
-    )   {
-        NavigationBar(containerColor = Color.Transparent, tonalElevation = 8.dp) {
-            items.forEach { item ->
-                NavigationBarItem(
-                    selected = selectedItem == item,
-                    onClick = { onItemSelected(item) },
-                    icon = {
-                        when (item) {
-                            "Language" -> Icon(
-                                painter = painterResource(id = R.drawable.language_icon),
-                                contentDescription = "Language Icon",
-                                modifier = Modifier.size(24.dp)
-                            )
 
-                            "Home" -> Icon(
-                                painter = painterResource(id = R.drawable.home_icon),
-                                contentDescription = "Home Icon", modifier = Modifier.size(24.dp)
-                            )
-
-                            "Suggest" -> Icon(
-                                painter = painterResource(id = R.drawable.suggest_icon),
-                                contentDescription = "Suggest Icon", modifier = Modifier.size(24.dp)
-                            )
-
-                            "Help" -> Icon(
-                                painter = painterResource(id = R.drawable.help_icon),
-                                contentDescription = "Help Icon", modifier = Modifier.size(24.dp)
-                            )
-
-                            "Settings" -> Icon(
-                                painter = painterResource(id = R.drawable.setting_icon),
-                                contentDescription = "Settings Icon",
-                                modifier = Modifier.size(24.dp)
-                            )
-                        }
-                    },
-                    label = { Text(text = item) },
-                    colors = NavigationBarItemDefaults.colors(
-                        indicatorColor = Color(0xFF388E3C),
-                        selectedIconColor = Color.White,
-                        selectedTextColor = Color.White,
-                        unselectedIconColor = Color.White,
-                        unselectedTextColor = Color.White
-                    )
-                )
-            }
-        }
-    }
-}
-
-//@Preview(showBackground = true)
+@Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     MaterialTheme {

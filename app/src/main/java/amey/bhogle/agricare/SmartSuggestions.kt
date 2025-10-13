@@ -59,6 +59,7 @@ fun SmartSuggestions(navController: NavController){
     var expandedWeather by remember { mutableStateOf(false) }
 
     Scaffold(
+        topBar = { AppTopBar(navController, title = "Smart Suggestions") },
         bottomBar = {
             BottomNavBar(selectedItem = "Suggest") {selected ->
                 when (selected) {
@@ -87,21 +88,6 @@ fun SmartSuggestions(navController: NavController){
                     .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Color(0xFF4CAF50))
-                        .padding(16.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "AgriCare",
-                        color = Color.White,
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-
                 Spacer(modifier = Modifier.height(25.dp))
 
                 ExposedDropdownMenuBox(
@@ -254,7 +240,7 @@ fun SmartSuggestions(navController: NavController){
                 Surface(
                     modifier = Modifier
                         .fillMaxWidth(0.9f)
-                        .height(365.dp),
+                        .height(345.dp),
                     shape = RoundedCornerShape(16.dp),
                     tonalElevation = 4.dp,
                     shadowElevation = 4.dp,

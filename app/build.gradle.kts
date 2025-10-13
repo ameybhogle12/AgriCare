@@ -51,6 +51,7 @@ dependencies {
     implementation(libs.androidx.material3)
     debugImplementation("androidx.compose.ui:ui-tooling")
     implementation("androidx.navigation:navigation-compose:2.7.7")
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.31.5-beta")
 
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
