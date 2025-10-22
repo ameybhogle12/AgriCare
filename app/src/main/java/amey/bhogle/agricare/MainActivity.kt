@@ -184,7 +184,7 @@ fun HomeScreen(navController: NavController) {
 
                     ElevatedButton(
                         onClick = {
-                            navController.navigate("health_tips") // navigate to HealthTips
+                            /*Handle Farming tips screen*/
                         },
                         modifier = Modifier
                             .fillMaxWidth(0.8f)
@@ -205,7 +205,9 @@ fun HomeScreen(navController: NavController) {
                     )
 
                     ElevatedButton(
-                        onClick = { /* Handle Health Tips */ },
+                        onClick = {
+                            navController.navigate("health_tips") // navigate to HealthTips
+                        },
                         modifier = Modifier
                             .fillMaxWidth(0.8f)
                             .padding(top = 8.dp)

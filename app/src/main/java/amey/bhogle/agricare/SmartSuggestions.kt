@@ -48,6 +48,7 @@ fun SmartSuggestions(navController: NavController){
     val regionOptions = listOf("Region 1", "Region 2", "Region 3")
     val soilOptions = listOf("Sandy", "Loamy", "Clayey", "Silty")
     val weatherOptions = listOf("Sunny", "Rainy", "Cloudy", "Cold")
+    val cropOptions = listOf("Wheat", "Mango", "Apple", "Maize")
 
     var selectedRegion by remember { mutableStateOf("") }
     var expandedRegion by remember { mutableStateOf(false) }
@@ -57,6 +58,9 @@ fun SmartSuggestions(navController: NavController){
 
     var selectedWeather by remember { mutableStateOf("") }
     var expandedWeather by remember { mutableStateOf(false) }
+
+    var selectedCrop by remember { mutableStateOf("") }
+    var expandedCrop by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = { AppTopBar(navController, title = "Smart Suggestions") },
@@ -90,6 +94,8 @@ fun SmartSuggestions(navController: NavController){
             ) {
                 Spacer(modifier = Modifier.height(25.dp))
 
+
+                //Select Region Dropdown
                 ExposedDropdownMenuBox(
                     expanded = expandedRegion,
                     onExpandedChange = { expandedRegion = !expandedRegion }
@@ -130,6 +136,8 @@ fun SmartSuggestions(navController: NavController){
                 }
 
                 Spacer(modifier = Modifier.height(20.dp))
+
+
                 // SOIL TYPE DROPDOWN
                 ExposedDropdownMenuBox(
                     expanded = expandedSoil,
@@ -212,6 +220,48 @@ fun SmartSuggestions(navController: NavController){
                     }
                 }
 
+                Spacer(modifier = Modifier.height(20.dp))
+
+                // Crop Dropdown
+                ExposedDropdownMenuBox(
+                    expanded = expandedCrop,
+                    onExpandedChange = { expandedCrop = !expandedCrop }
+                ) {
+                    TextField(
+                        value = selectedCrop,
+                        onValueChange = {},
+                        readOnly = true,
+                        label = { Text("Select Crop") },
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedWeather) },
+                        modifier = Modifier
+                            .menuAnchor(MenuAnchorType.PrimaryNotEditable, enabled = true)
+                            .fillMaxWidth(0.9f),
+                        colors = ExposedDropdownMenuDefaults.textFieldColors(
+                            focusedContainerColor = Color.White,
+                            unfocusedContainerColor = Color.White,
+                            disabledContainerColor = Color.White,
+                            focusedLabelColor = Color(0xFF4CAF50), // Green when active
+                            unfocusedLabelColor = Color.Gray,
+                            focusedTrailingIconColor = Color(0xFF4CAF50),
+                            unfocusedTrailingIconColor = Color.Gray
+                        )
+                    )
+                    ExposedDropdownMenu(
+                        expanded = expandedCrop,
+                        onDismissRequest = { expandedCrop = false }
+                    ) {
+                        cropOptions.forEach { crop ->
+                            DropdownMenuItem(
+                                text = { Text(crop) },
+                                onClick = {
+                                    selectedCrop = crop
+                                    expandedCrop = false
+                                }
+                            )
+                        }
+                    }
+                }
+
                 Spacer(modifier = Modifier.height(15.dp))
                 //Predict Button
                 ElevatedButton(
@@ -240,7 +290,7 @@ fun SmartSuggestions(navController: NavController){
                 Surface(
                     modifier = Modifier
                         .fillMaxWidth(0.9f)
-                        .height(345.dp),
+                        .height(340.dp),
                     shape = RoundedCornerShape(16.dp),
                     tonalElevation = 4.dp,
                     shadowElevation = 4.dp,
