@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "amey.bhogle.agricare"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "amey.bhogle.agricare"
@@ -46,10 +46,12 @@ android {
 dependencies {
     implementation(platform("androidx.compose:compose-bom:2025.09.00"))
     implementation("androidx.compose.ui:ui")
-    implementation(libs.androidx.material3)
+    implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.ui:ui-tooling-preview")
+    implementation(libs.androidx.material3)
     debugImplementation("androidx.compose.ui:ui-tooling")
     implementation("androidx.navigation:navigation-compose:2.7.7")
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.31.5-beta")
 
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

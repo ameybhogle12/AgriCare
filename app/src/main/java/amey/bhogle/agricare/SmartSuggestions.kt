@@ -3,7 +3,6 @@ package amey.bhogle.agricare
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -32,11 +31,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.graphics.BlendMode
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -65,6 +59,7 @@ fun SmartSuggestions(navController: NavController){
     var expandedWeather by remember { mutableStateOf(false) }
 
     Scaffold(
+        topBar = { AppTopBar(navController, title = "Smart Suggestions") },
         bottomBar = {
             BottomNavBar(selectedItem = "Suggest") {selected ->
                 when (selected) {
@@ -93,21 +88,6 @@ fun SmartSuggestions(navController: NavController){
                     .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Color(0xFF4CAF50))
-                        .padding(16.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "AgriCare",
-                        color = Color.White,
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-
                 Spacer(modifier = Modifier.height(25.dp))
 
                 ExposedDropdownMenuBox(
@@ -256,54 +236,34 @@ fun SmartSuggestions(navController: NavController){
                     )
                 }
 
-                InnerShadowBox(
+                Spacer(modifier = Modifier.height(20.dp))
+                Surface(
                     modifier = Modifier
                         .fillMaxWidth(0.9f)
-                        .height(200.dp)
+                        .height(345.dp),
+                    shape = RoundedCornerShape(16.dp),
+                    tonalElevation = 4.dp,
+                    shadowElevation = 4.dp,
+                    color = Color.White
                 ) {
-                    Text("Suggestions here...", color = Color.DarkGray)
+                    Box(
+                        modifier = Modifier.fillMaxSize()
+                            .padding(12.dp)
+                            .verticalScroll(rememberScrollState()),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "Suggestions here...",
+                            color = Color.Gray,
+                            fontSize = 16.sp
+                        )
+                    }
                 }
+
             }
         }
     }
 }
-
-//Inner shadow for Suggestion box
-@Composable
-fun InnerShadowBox(
-    modifier: Modifier = Modifier,
-    content: @Composable BoxScope.() -> Unit
-) {
-    Box(
-        modifier = modifier
-            .background(
-                brush = Brush.linearGradient(
-                    colors = listOf(
-                        Color(0xFFE0E0E0), // light gray center
-                        Color(0xFFBDBDBD)  // darker edges
-                    )
-                ),
-                shape = RoundedCornerShape(16.dp)
-            )
-            .drawWithContent {
-                drawContent()
-                drawRoundRect(
-                    brush = Brush.radialGradient(
-                        colors = listOf(Color(0x55000000), Color.Transparent),
-                        center = center,
-                        radius = size.maxDimension / 1.2f
-                    ),
-                    cornerRadius = CornerRadius(16.dp.toPx(), 16.dp.toPx()),
-                    blendMode = BlendMode.Multiply // darkens only edges
-                )
-            }
-            .padding(16.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        content()
-    }
-}
-
 
 
 @Preview(showBackground = true)

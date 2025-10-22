@@ -9,7 +9,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -21,25 +23,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur // Import for the blur modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 
-
-class HealthTipsActivity  : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            HealthTipsScreen()
-        }
-    }
-}
-
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
-fun HealthTipsScreen() {
+fun HealthTipsScreen(navController: NavController) {
+
+
     val tips = listOf(
         HealthTip("Fever", "Stay hydrated. Wet cloth on forehead.", R.drawable.fever),
         HealthTip("Diarrhea", "ORS mix, visit health worker.", R.drawable.ors),
@@ -47,43 +45,52 @@ fun HealthTipsScreen() {
         HealthTip("Cuts", "Wash with clean water, apply Dettol.", R.drawable.dettol)
     )
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            // I've temporarily added a background image here for demonstration
-            // Replace R.drawable.your_background_image with your actual image resource later
-            // Or remove this line if you want to test with a plain color background initially
-            .background(Color(0xFFFFFACC)) // Keep this if you want a fallback color
-        // For a better visual, you can use an Image Composable as the very first item
-        // in the Column if you want it to truly be a background image.
-        // For now, let's just make the existing background show through the blur.
-    ) {
-        // Header
-        Text(
-            text = "Health Tips",
-            color = Color.White,
-            fontSize = 22.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color(0xFF4CAF50))
-                .padding(16.dp),
-        )
-
-        // List of tips
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(8.dp)
-        ) {
-            items(tips.size) { index ->
-                HealthTipCard(tip = tips[index])
+    Scaffold(
+        topBar = { AppTopBar(navController, title = "Health Tips") },
+        bottomBar = {
+            BottomNavBar(selectedItem = "") {selected ->
+                when (selected) {
+                    "Home" -> navController.navigate("home")
+                    "Suggest" -> navController.navigate("smart_suggestions")
+                    "Language" -> navController.navigate("language")
+                    "Help" -> navController.navigate("help")
+                    "Settings" -> navController.navigate("settings")
+                }
             }
         }
+    ) {
+        innerPadding ->
+        Box(modifier = Modifier.fillMaxSize()
+            .padding(innerPadding)
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.background),
+                contentDescription = "BackGround Image",
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop
+            )
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .zIndex(1f)
+            ) {
 
-        // Bottom Navigation
-        BottomNavBar()
+                // List of tips
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(8.dp)
+
+                ) {
+                    items(tips.size) { index ->
+                        HealthTipCard(tip = tips[index])
+                    }
+                }
+            }
     }
+    }
+
+
 }
 
 @Composable
@@ -164,18 +171,12 @@ fun HealthTipCard(tip: HealthTip) {
     }
 }
 
-
-
+@Preview(showBackground = true)
 @Composable
-fun BottomNavBar() {
-    NavigationBar(
-        containerColor = Color(0xFF2E7D32),
-        tonalElevation = 4.dp
-    ) {
-        NavigationBarItem(selected = true, onClick = { }, icon = { }, label = { Text("Language") })
-        NavigationBarItem(selected = false, onClick = { }, icon = { }, label = { Text("Home") })
-        NavigationBarItem(selected = false, onClick = { }, icon = { }, label = { Text("Suggest") })
-        NavigationBarItem(selected = false, onClick = { }, icon = { }, label = { Text("Help") })
-        NavigationBarItem(selected = false, onClick = { }, icon = { }, label = { Text("Settings") })
+fun HealthTipsPreview() {
+    MaterialTheme {
+        HealthTipsScreen(
+            navController = rememberNavController()
+        )
     }
 }
