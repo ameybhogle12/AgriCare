@@ -1,0 +1,33 @@
+Barley
+Bean
+Dagussa
+Fallow
+Maize
+Niger Seed
+Pea
+Potato
+Red Pepper
+Sorghum
+Teff
+Wheat
+Rice
+Chickpea
+Kidneybeans
+Pigeonpeas
+Mothbeans
+Mungbean
+Blackgram
+Lentil
+Pomegranate
+Banana
+Mango
+Grapes
+Watermelon
+Muskmelon
+Apple
+Orange
+Papaya
+Coconut
+Cotton
+Jute
+Coffee
