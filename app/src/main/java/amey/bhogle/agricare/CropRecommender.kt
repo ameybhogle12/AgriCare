@@ -32,35 +32,54 @@ class CropRecommender(private val context: Context) {
     private lateinit var scalerStds: FloatArray
     private lateinit var featureNames: List<String>
 
+    var isInitialised = false
+
     // --- Model and Parameter Loading ---
     init {
         try {
             // Load the model and all parameters needed for inference
-            tflite = loadModelFile("crop_recommender_v3.tflite")
-            loadLabels("labels_v3.txt")
-            loadScalerParams("scaler_params_v3.json")
+            val tflitePath = context.getString(R.string.model_file_tflite)
+            val labelsPath = context.getString(R.string.model_file_labels)
+            val scalerPath = context.getString(R.string.model_file_scaler)
+
+            tflite = loadModelFile(tflitePath)
+            loadLabels(labelsPath)
+            loadScalerParams(scalerPath)
+
+            isInitialised = true
         } catch (e: Exception) {
             // Log the error and prevent the app from crashing entirely
             // In a real app, you would show a user-friendly error dialog.
             println("FATAL ERROR: Failed to initialize TFLite model or parameters: $e")
+            isInitialised = false
         }
     }
 
+    // In CropRecommender.kt, replace the loadModelFile function
+
     private fun loadModelFile(assetPath: String): Interpreter {
-        // Loads the TFLite file from assets folder into a memory-mapped buffer
-        val fileDescriptor = context.assets.openFd(assetPath)
-        val inputStream = FileInputStream(fileDescriptor.fileDescriptor)
-        val fileChannel = inputStream.channel
-        val startOffset = fileDescriptor.startOffset
-        val declaredLength = fileDescriptor.declaredLength
-        val buffer: MappedByteBuffer = fileChannel.map(
-            FileChannel.MapMode.READ_ONLY, startOffset, declaredLength
-        )
-        // Set number of threads for optimal performance (using 2-4 is often best for CPU)
-        val options = Interpreter.Options()
-        options.setNumThreads(2)
+        val assetManager = context.assets
+
+        // Read into a ByteArray & then into a direct, native-order ByteBuffer
+        val buffer = assetManager.open(assetPath).use { inputStream ->
+            val fileBytes = inputStream.readBytes()
+
+            java.nio.ByteBuffer
+                .allocateDirect(fileBytes.size)
+                .order(java.nio.ByteOrder.nativeOrder()) // ✅ IMPORTANT
+                .apply {
+                    put(fileBytes)
+                    rewind() // reset position to 0
+                }
+        }
+
+        val options = Interpreter.Options().apply {
+            setNumThreads(2)
+        }
+
         return Interpreter(buffer, options)
     }
+
 
     private fun loadLabels(assetPath: String) {
         // Loads the crop names
@@ -132,8 +151,12 @@ class CropRecommender(private val context: Context) {
         // 2. Standardize the 10 Features
 
         // Ensure order matches the model (feature_names list from JSON)
-        val rawInputs = FloatArray(10) {
-            features[featureNames[it]] ?: throw IllegalStateException("Missing feature: ${featureNames[it]}")
+        val rawInputs = FloatArray(featureNames.size) { idx ->
+            val modelName = featureNames[idx]          // Name from JSON / Python
+            val mapKey = modelName.replace('-', '_')   // Name used in Kotlin maps
+
+            features[mapKey]
+                ?: throw IllegalStateException("Missing feature: $modelName (mapped key: $mapKey)")
         }
 
         val standardizedInputs = standardizeFeatures(rawInputs)

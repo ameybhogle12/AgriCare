@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "amey.bhogle.agricare"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -23,6 +23,14 @@ android {
 
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.3"
+    }
+
+    packaging {
+        // Excludes the .tflite files from the default asset compression process.
+        // This is CRITICAL for MappedByteBuffer to work correctly for loading the AI model.
+        resources {
+            excludes += listOf("**.tflite")
+        }
     }
 
     buildTypes {
@@ -43,12 +51,17 @@ android {
     }
 }
 
+configurations.all {
+    exclude(group = "com.google.ai.edge.litert", module = "litert-api")
+}
+
 dependencies {
     implementation(platform("androidx.compose:compose-bom:2025.09.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.material3:material3")
-    implementation("org.tensorflow:tensorflow-lite:2.15.0")
+    implementation("org.tensorflow:tensorflow-lite:2.17.0")
     implementation("org.tensorflow:tensorflow-lite-support:0.4.4")
+    implementation("org.tensorflow:tensorflow-lite-gpu:2.17.0")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation(libs.androidx.material3)
     debugImplementation("androidx.compose.ui:ui-tooling")

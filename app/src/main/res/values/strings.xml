@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">AgriCare</string>
     <string name="Title">AgriCare</string>
+    <string name="model_file_tflite">crop_recommender_v3.tflite</string>
+    <string name="model_file_labels">labels_v3.txt</string>
+    <string name="model_file_scaler">scaler_params_v3.json</string>
 </resources>

@@ -33,6 +33,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -45,10 +46,13 @@ import androidx.navigation.compose.rememberNavController
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SmartSuggestions(navController: NavController){
-    val regionOptions = listOf("Region 1", "Region 2", "Region 3")
-    val soilOptions = listOf("Sandy", "Loamy", "Clayey", "Silty")
-    val weatherOptions = listOf("Sunny", "Rainy", "Cloudy", "Cold")
-    val cropOptions = listOf("Wheat", "Mango", "Apple", "Maize")
+    val regionOptions = regionWeatherMap.keys.toList()
+    val soilOptions = soilTypeMap.keys.toList()
+    val weatherOptions = listOf("Kharif (Monsoon)", "Rabi (Winter)", "Zaid (Summer)")
+    val cropOptions = listOf("Apple", "Banana", "Coffee", "Jute", "Mango", "Maize", "Orange", "Rice", "Wheat")
+
+    val context = LocalContext.current
+    val recommender = remember { CropRecommender(context) }
 
     var selectedRegion by remember { mutableStateOf("") }
     var expandedRegion by remember { mutableStateOf(false) }
@@ -61,6 +65,9 @@ fun SmartSuggestions(navController: NavController){
 
     var selectedCrop by remember { mutableStateOf("") }
     var expandedCrop by remember { mutableStateOf(false) }
+
+    var predictionResultText by remember { mutableStateOf("Suggestions here...") }
+    var predictionResultColor by remember { mutableStateOf(Color.Gray) }
 
     Scaffold(
         topBar = { AppTopBar(navController, title = "Smart Suggestions") },
@@ -266,7 +273,37 @@ fun SmartSuggestions(navController: NavController){
                 //Predict Button
                 ElevatedButton(
                     onClick = {
-                        // TODO: Call your ML model or prediction logic here
+
+                        if (!recommender.isInitialised) {
+                            predictionResultText = "ERROR: AI model files failed to load. Check your assets folder!"
+                            predictionResultColor = Color.Red
+                        }
+                        else if (selectedRegion.isNotEmpty() && selectedSoil.isNotEmpty() && selectedWeather.isNotEmpty()) {
+                            val prediction = recommender.getPrediction(
+                                selectedRegion,
+                                selectedSoil,
+                                selectedWeather,
+                                selectedCrop.ifEmpty { null } // Pass null if 'Check Crop' is empty
+                            )
+
+                            // Update UI based on the prediction result
+                            val confidencePercent = prediction.confidence * 100
+
+                            predictionResultText = if (selectedCrop.isNotEmpty()) {
+                                // Validation Mode Output
+                                val viability = if (prediction.isRecommended) "Viable" else "Not Recommended"
+                                predictionResultColor = if (prediction.isRecommended) Color(0xFF4CAF50) else Color.Red
+                                "VIABILITY CHECK for ${prediction.predictedCrop}:\nConfidence: ${confidencePercent.toFormattedString()}%\nResult: $viability"
+                            } else {
+                                // Recommendation Mode Output
+                                predictionResultColor = Color.Black
+                                "RECOMMENDED CROP:\n${prediction.predictedCrop}\nConfidence: ${confidencePercent.toFormattedString()}%"
+                            }
+                        } else {
+                            // Error message if fields are missing
+                            predictionResultText = "Please select Region, Soil, and Season to predict."
+                            predictionResultColor = Color.Red
+                        }
                     },
                     modifier = Modifier.fillMaxWidth(0.5f),
                     shape = RoundedCornerShape(12.dp),
@@ -303,8 +340,8 @@ fun SmartSuggestions(navController: NavController){
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "Suggestions here...",
-                            color = Color.Gray,
+                            text = predictionResultText,
+                            color = predictionResultColor,
                             fontSize = 16.sp
                         )
                     }
@@ -315,6 +352,9 @@ fun SmartSuggestions(navController: NavController){
     }
 }
 
+fun Float.toFormattedString(decimals: Int = 2): String {
+    return String.format("%.${decimals}f", this)
+}
 
 @Preview(showBackground = true)
 @Composable
