@@ -20,7 +20,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
@@ -66,7 +68,7 @@ class MainActivity : AppCompatActivity() {
 
                     SideEffect {
                         systemUiController.setStatusBarColor(
-                            color = Color(0xFF4CAF50), //same green as your header
+                            color = Color(0xFF2F6138), //same green as your header
                             darkIcons = useDarkIcons
                         )
                     }
@@ -126,12 +128,17 @@ fun HomeScreen(navController: NavController) {
             //UI Contents
             Column(modifier = Modifier
                 .fillMaxSize()
-                .zIndex(1f)) {
+                .zIndex(1f)
+                .verticalScroll(rememberScrollState())
+                .padding(bottom = 56.dp)
+            )
+
+            {
                 // Header Box for the App Title
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(Color(0xFF4CAF50))
+                        .background(Color(0xFF2F6138))
                         .padding(16.dp),
                     contentAlignment = Alignment.Center
                 ) {
@@ -273,6 +280,10 @@ fun NewsCarousel() {
             CarouselItem(0, R.drawable.farmingimg, "Agricultural news image 1"),
 
             CarouselItem(1, R.drawable.doctorimg, "Agricultural news image 2"),
+
+            CarouselItem(1, R.drawable.woman, "Agricultural news image 3"),
+
+            CarouselItem(1, R.drawable.bull, "Agricultural news image 4")
         )
     }
     // State for the pager, which tracks the current page

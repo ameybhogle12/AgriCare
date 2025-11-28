@@ -185,9 +185,7 @@ class CropRecommender(private val context: Context) {
             labels[idx] to probabilities[idx]
         }
 
-        // 4. Post-Process (Recommendation OR Validation)
-
-        // In recommendation mode:
+// In recommendation mode:
         if (selectedValidationCrop.isNullOrEmpty()) {
             val predictedIndex = topIndices.firstOrNull() ?: return CropPrediction("Error", 0f, false, topResults)
             val confidence = probabilities[predictedIndex]
