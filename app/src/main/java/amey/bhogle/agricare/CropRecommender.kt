@@ -13,7 +13,8 @@ import com.google.gson.Gson
 data class CropPrediction(
     val predictedCrop: String,
     val confidence: Float,
-    val isRecommended: Boolean = true
+    val isRecommended: Boolean = true,
+    val topResults: List<Pair<String, Float>> = emptyList() // (label, prob)
 )
 
 // Kotlin data class to map the structure of the scaler_params_v3.json file
@@ -175,27 +176,34 @@ class CropRecommender(private val context: Context) {
 
         val probabilities = outputBuffer.floatArray
 
+        val topK = 3
+        val topIndices = probabilities.indices
+            .sortedByDescending { probabilities[it] }
+            .take(topK)
+
+        val topResults = topIndices.map { idx ->
+            labels[idx] to probabilities[idx]
+        }
+
         // 4. Post-Process (Recommendation OR Validation)
 
-        return if (selectedValidationCrop.isNullOrEmpty()) {
-            // A. RECOMMENDATION MODE: Find the highest probability
-            val predictedIndex = probabilities.indices.maxByOrNull { probabilities[it] } ?: return CropPrediction("Error", 0f, false)
+        // In recommendation mode:
+        if (selectedValidationCrop.isNullOrEmpty()) {
+            val predictedIndex = topIndices.firstOrNull() ?: return CropPrediction("Error", 0f, false, topResults)
             val confidence = probabilities[predictedIndex]
-            CropPrediction(labels[predictedIndex], confidence)
-
+            return CropPrediction(labels[predictedIndex], confidence, true, topResults)
         } else {
-            // B. VALIDATION MODE: Check confidence for the farmer's chosen crop
+            // validation branch (keep same behavior for header), but still fill topResults
             val cropIndex = labels.indexOf(selectedValidationCrop)
             if (cropIndex == -1) {
-                return CropPrediction("Unknown Crop", 0f, false)
+                return CropPrediction("Unknown Crop", 0f, false, topResults)
             }
             val confidence = probabilities[cropIndex]
-
-            // Threshold: Define 45% confidence as "Viable"
-            CropPrediction(
+            return CropPrediction(
                 predictedCrop = selectedValidationCrop,
                 confidence = confidence,
-                isRecommended = confidence > 0.45f
+                isRecommended = confidence > 0.45f,
+                topResults = topResults
             )
         }
     }

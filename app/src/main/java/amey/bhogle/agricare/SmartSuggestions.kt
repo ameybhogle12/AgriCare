@@ -45,11 +45,21 @@ import androidx.navigation.compose.rememberNavController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SmartSuggestions(navController: NavController){
+fun SmartSuggestions(navController: NavController) {
+    // your existing lists (keep labels consistent)
     val regionOptions = regionWeatherMap.keys.toList()
-    val soilOptions = soilTypeMap.keys.toList()
+    val soilOptionsAll = soilTypeMap.keys.toList()
     val weatherOptions = listOf("Kharif (Monsoon)", "Rabi (Winter)", "Zaid (Summer)")
     val cropOptions = listOf("Apple", "Banana", "Coffee", "Jute", "Mango", "Maize", "Orange", "Rice", "Wheat")
+
+    // map regions -> allowed soils (tweak as you see fit)
+    val regionToSoils = mapOf(
+        "Himalayan Region (Cold)" to listOf("Alluvial Soil", "Red Soil"),
+        "Northern Plains (Hot/Cold)" to listOf("Alluvial Soil", "Black (Regur) Soil"),
+        "Deccan Plateau (Semi-Arid)" to listOf("Black (Regur) Soil", "Red Soil", "Laterite Soil"),
+        "Coastal South (Humid)" to listOf("Laterite Soil", "Red Soil", "Alluvial Soil"),
+        "Arid Zone (Rajasthan)" to listOf("Desert Soil", "Alluvial Soil")
+    )
 
     val context = LocalContext.current
     val recommender = remember { CropRecommender(context) }
@@ -57,12 +67,15 @@ fun SmartSuggestions(navController: NavController){
     var selectedRegion by remember { mutableStateOf("") }
     var expandedRegion by remember { mutableStateOf(false) }
 
+    // soil is now dynamic based on selectedRegion
     var selectedSoil by remember { mutableStateOf("") }
     var expandedSoil by remember { mutableStateOf(false) }
 
     var selectedWeather by remember { mutableStateOf("") }
     var expandedWeather by remember { mutableStateOf(false) }
 
+    // By default, disable validation (experimental). User can enable to test at their own risk.
+    var enableValidation by remember { mutableStateOf(false) } // toggle: false = validation disabled
     var selectedCrop by remember { mutableStateOf("") }
     var expandedCrop by remember { mutableStateOf(false) }
 
@@ -72,7 +85,7 @@ fun SmartSuggestions(navController: NavController){
     Scaffold(
         topBar = { AppTopBar(navController, title = "Smart Suggestions") },
         bottomBar = {
-            BottomNavBar(selectedItem = "Suggest") {selected ->
+            BottomNavBar(selectedItem = "Suggest") { selected ->
                 when (selected) {
                     "Home" -> navController.navigate("home")
                     "Suggest" -> navController.navigate("smart_suggestions")
@@ -83,7 +96,8 @@ fun SmartSuggestions(navController: NavController){
             }
         }
     ) { innerPadding ->
-        Box(modifier = Modifier.fillMaxSize()
+        Box(modifier = Modifier
+            .fillMaxSize()
             .padding(innerPadding)
         ) {
             Image(
@@ -101,8 +115,7 @@ fun SmartSuggestions(navController: NavController){
             ) {
                 Spacer(modifier = Modifier.height(25.dp))
 
-
-                //Select Region Dropdown
+                // --- Region selector ---
                 ExposedDropdownMenuBox(
                     expanded = expandedRegion,
                     onExpandedChange = { expandedRegion = !expandedRegion }
@@ -120,10 +133,8 @@ fun SmartSuggestions(navController: NavController){
                             focusedContainerColor = Color.White,
                             unfocusedContainerColor = Color.White,
                             disabledContainerColor = Color.White,
-                            focusedLabelColor = Color(0xFF4CAF50), // Green when active
-                            unfocusedLabelColor = Color.Gray,
-                            focusedTrailingIconColor = Color(0xFF4CAF50),
-                            unfocusedTrailingIconColor = Color.Gray
+                            focusedLabelColor = Color(0xFF4CAF50),
+                            unfocusedLabelColor = Color.Gray
                         )
                     )
                     ExposedDropdownMenu(
@@ -136,6 +147,11 @@ fun SmartSuggestions(navController: NavController){
                                 onClick = {
                                     selectedRegion = region
                                     expandedRegion = false
+                                    // auto-select allowed soil when region changes
+                                    val allowed = regionToSoils[region] ?: soilOptionsAll
+                                    if (!allowed.contains(selectedSoil)) {
+                                        selectedSoil = allowed.first()
+                                    }
                                 }
                             )
                         }
@@ -144,8 +160,7 @@ fun SmartSuggestions(navController: NavController){
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-
-                // SOIL TYPE DROPDOWN
+                // --- Soil selector (filtered by region) ---
                 ExposedDropdownMenuBox(
                     expanded = expandedSoil,
                     onExpandedChange = { expandedSoil = !expandedSoil }
@@ -163,17 +178,16 @@ fun SmartSuggestions(navController: NavController){
                             focusedContainerColor = Color.White,
                             unfocusedContainerColor = Color.White,
                             disabledContainerColor = Color.White,
-                            focusedLabelColor = Color(0xFF4CAF50), // Green when active
-                            unfocusedLabelColor = Color.Gray,
-                            focusedTrailingIconColor = Color(0xFF4CAF50),
-                            unfocusedTrailingIconColor = Color.Gray
+                            focusedLabelColor = Color(0xFF4CAF50),
+                            unfocusedLabelColor = Color.Gray
                         )
                     )
                     ExposedDropdownMenu(
                         expanded = expandedSoil,
                         onDismissRequest = { expandedSoil = false }
                     ) {
-                        soilOptions.forEach { soil ->
+                        val allowedSoils = regionToSoils[selectedRegion] ?: soilOptionsAll
+                        allowedSoils.forEach { soil ->
                             DropdownMenuItem(
                                 text = { Text(soil) },
                                 onClick = {
@@ -187,7 +201,7 @@ fun SmartSuggestions(navController: NavController){
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                // WEATHER DROPDOWN
+                // --- Weather selector ---
                 ExposedDropdownMenuBox(
                     expanded = expandedWeather,
                     onExpandedChange = { expandedWeather = !expandedWeather }
@@ -205,10 +219,8 @@ fun SmartSuggestions(navController: NavController){
                             focusedContainerColor = Color.White,
                             unfocusedContainerColor = Color.White,
                             disabledContainerColor = Color.White,
-                            focusedLabelColor = Color(0xFF4CAF50), // Green when active
-                            unfocusedLabelColor = Color.Gray,
-                            focusedTrailingIconColor = Color(0xFF4CAF50),
-                            unfocusedTrailingIconColor = Color.Gray
+                            focusedLabelColor = Color(0xFF4CAF50),
+                            unfocusedLabelColor = Color.Gray
                         )
                     )
                     ExposedDropdownMenu(
@@ -229,101 +241,116 @@ fun SmartSuggestions(navController: NavController){
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                // Crop Dropdown
+                // --- Validation toggle & Crop selector (disabled unless toggled) ---
+                // Simple toggle: when not enabled, crop remains visible but disabled with hint.
+                Text(
+                    text = if (enableValidation) "Validation (Experimental) — Enabled" else "Validation (Experimental) — Disabled",
+                    fontSize = 12.sp,
+                    color = if (enableValidation) Color(0xFF4CAF50) else Color.DarkGray,
+                    modifier = Modifier.padding(bottom = 6.dp)
+                )
+
                 ExposedDropdownMenuBox(
                     expanded = expandedCrop,
-                    onExpandedChange = { expandedCrop = !expandedCrop }
+                    onExpandedChange = { if (enableValidation) expandedCrop = !expandedCrop }
                 ) {
                     TextField(
-                        value = selectedCrop,
+                        value = if (enableValidation) selectedCrop else "Validation disabled",
                         onValueChange = {},
                         readOnly = true,
-                        label = { Text("Select Crop") },
-                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedWeather) },
+                        label = { Text("Select Crop (Optional)") },
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedCrop) },
                         modifier = Modifier
                             .menuAnchor(MenuAnchorType.PrimaryNotEditable, enabled = true)
                             .fillMaxWidth(0.9f),
+                        enabled = enableValidation,
                         colors = ExposedDropdownMenuDefaults.textFieldColors(
                             focusedContainerColor = Color.White,
-                            unfocusedContainerColor = Color.White,
-                            disabledContainerColor = Color.White,
-                            focusedLabelColor = Color(0xFF4CAF50), // Green when active
-                            unfocusedLabelColor = Color.Gray,
-                            focusedTrailingIconColor = Color(0xFF4CAF50),
-                            unfocusedTrailingIconColor = Color.Gray
+                            unfocusedContainerColor = Color(0xFFF1F1F1),
+                            disabledContainerColor = Color(0xFFF1F1F1),
+                            focusedLabelColor = Color(0xFF4CAF50),
+                            unfocusedLabelColor = Color.Gray
                         )
                     )
-                    ExposedDropdownMenu(
-                        expanded = expandedCrop,
-                        onDismissRequest = { expandedCrop = false }
-                    ) {
-                        cropOptions.forEach { crop ->
-                            DropdownMenuItem(
-                                text = { Text(crop) },
-                                onClick = {
-                                    selectedCrop = crop
-                                    expandedCrop = false
-                                }
-                            )
+                    if (enableValidation) {
+                        ExposedDropdownMenu(
+                            expanded = expandedCrop,
+                            onDismissRequest = { expandedCrop = false }
+                        ) {
+                            cropOptions.forEach { crop ->
+                                DropdownMenuItem(
+                                    text = { Text(crop) },
+                                    onClick = {
+                                        selectedCrop = crop
+                                        expandedCrop = false
+                                    }
+                                )
+                            }
                         }
                     }
                 }
 
                 Spacer(modifier = Modifier.height(15.dp))
-                //Predict Button
+
+                // Predict Button
                 ElevatedButton(
                     onClick = {
-
                         if (!recommender.isInitialised) {
                             predictionResultText = "ERROR: AI model files failed to load. Check your assets folder!"
                             predictionResultColor = Color.Red
+                            return@ElevatedButton
                         }
-                        else if (selectedRegion.isNotEmpty() && selectedSoil.isNotEmpty() && selectedWeather.isNotEmpty()) {
-                            val prediction = recommender.getPrediction(
-                                selectedRegion,
-                                selectedSoil,
-                                selectedWeather,
-                                selectedCrop.ifEmpty { null } // Pass null if 'Check Crop' is empty
-                            )
-
-                            // Update UI based on the prediction result
-                            val confidencePercent = prediction.confidence * 100
-
-                            predictionResultText = if (selectedCrop.isNotEmpty()) {
-                                // Validation Mode Output
-                                val viability = if (prediction.isRecommended) "Viable" else "Not Recommended"
-                                predictionResultColor = if (prediction.isRecommended) Color(0xFF4CAF50) else Color.Red
-                                "VIABILITY CHECK for ${prediction.predictedCrop}:\nConfidence: ${confidencePercent.toFormattedString()}%\nResult: $viability"
-                            } else {
-                                // Recommendation Mode Output
-                                predictionResultColor = Color.Black
-                                "RECOMMENDED CROP:\n${prediction.predictedCrop}\nConfidence: ${confidencePercent.toFormattedString()}%"
-                            }
-                        } else {
-                            // Error message if fields are missing
+                        if (selectedRegion.isEmpty() || selectedSoil.isEmpty() || selectedWeather.isEmpty()) {
                             predictionResultText = "Please select Region, Soil, and Season to predict."
                             predictionResultColor = Color.Red
+                            return@ElevatedButton
+                        }
+
+                        val prediction = recommender.getPrediction(
+                            selectedRegion,
+                            selectedSoil,
+                            selectedWeather,
+                            if (enableValidation) selectedCrop.ifEmpty { null } else null
+                        )
+
+                        if (enableValidation && selectedCrop.isNotEmpty()) {
+                            val confidencePercent = prediction.confidence * 100
+                            val viability = if (prediction.isRecommended) "Viable" else "Not Recommended"
+                            predictionResultColor = if (prediction.isRecommended) Color(0xFF4CAF50) else Color.Red
+                            predictionResultText = "VIABILITY CHECK for ${prediction.predictedCrop}:\nConfidence: ${confidencePercent.toFormattedString()}%\nResult: $viability\n\nTop suggestions:\n" +
+                                    prediction.topResults.joinToString("\n") { "${it.first}: ${ (it.second*100).toFormattedString() }%" }
+                        } else {
+                            // Recommendation Mode: show top-3 prominently
+                            val top = prediction.topResults
+                            val main = prediction.predictedCrop
+                            val mainConf = prediction.confidence * 100
+                            predictionResultColor = Color.Black
+                            predictionResultText = buildString {
+                                append("RECOMMENDED CROP:\n")
+                                append("$main\nConfidence: ${mainConf.toFormattedString()}%\n\n")
+                                append("Top suggestions:\n")
+                                top.forEach { (label, prob) ->
+                                    append("${label}: ${(prob*100).toFormattedString()}%\n")
+                                }
+                                if (!enableValidation) {
+                                    append("\nNote: Validation is experimental and currently disabled.")
+                                }
+                            }
                         }
                     },
                     modifier = Modifier.fillMaxWidth(0.5f),
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.elevatedButtonColors(
-                        containerColor = Color(0xFF81C784), // Green background
-                        contentColor = Color.White          // White text
+                        containerColor = Color(0xFF81C784),
+                        contentColor = Color.White
                     ),
-                    elevation = ButtonDefaults.elevatedButtonElevation(
-                        defaultElevation = 6.dp,
-                        pressedElevation = 10.dp
-                    )
+                    elevation = ButtonDefaults.elevatedButtonElevation(defaultElevation = 6.dp)
                 ) {
-                    Text(
-                        text = "Predict",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
-                    )
+                    Text(text = "Predict", fontSize = 18.sp, fontWeight = FontWeight.Bold)
                 }
 
                 Spacer(modifier = Modifier.height(20.dp))
+
                 Surface(
                     modifier = Modifier
                         .fillMaxWidth(0.9f)
@@ -334,7 +361,8 @@ fun SmartSuggestions(navController: NavController){
                     color = Color.White
                 ) {
                     Box(
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier
+                            .fillMaxSize()
                             .padding(12.dp)
                             .verticalScroll(rememberScrollState()),
                         contentAlignment = Alignment.Center
@@ -346,7 +374,6 @@ fun SmartSuggestions(navController: NavController){
                         )
                     }
                 }
-
             }
         }
     }
