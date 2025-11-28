@@ -1,0 +1,106 @@
+<resources>
+    <string name="app_name">એગ્રીકેર</string>
+    <string name="Title">એગ્રીકેર</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">હોમ</string>
+    <string name="nav_suggest">સૂચના</string>
+    <string name="nav_language">ભાષા</string>
+    <string name="nav_help">મદદ</string>
+    <string name="nav_settings">સેટિંગ્સ</string>
+
+    <!-- Home Screen -->
+    <string name="news_title">સમાચાર!</string>
+    <string name="smart_suggestions_button">સ્માર્ટ સૂચનાઓ મેળવો</string>
+    <string name="smart_suggestions_subtitle">મારે કયો પાક ઉગાડવો જોઈએ?</string>
+    <string name="farming_tips_button">ખેતી ટિપ્સ</string>
+    <string name="farming_tips_subtitle">માટીની સંભાળ, જંતુ નિયંત્રણ, હવામાન ટિપ્સ</string>
+    <string name="health_tips_button">આરોગ્ય ટિપ્સ</string>
+    <string name="health_tips_subtitle">તાવ, ઉધરસ, પ્રાથમિક સારવાર, નિર્જલીકરણ, વગેરે</string>
+    <string name="sync_data">ડેટા સિંક કરો</string>
+    <string name="last_sync">છેલ્લું સિંક: 2023-07-26</string>
+
+    <!-- Smart Suggestions Screen -->
+    <string name="smart_suggestions_title">સ્માર્ટ સૂચનાઓ</string>
+    <string name="select_region">પ્રદેશ પસંદ કરો</string>
+    <string name="select_soil_type">માટીનો પ્રકાર પસંદ કરો</string>
+    <string name="select_weather">હવામાન પસંદ કરો</string>
+    <string name="select_crop">પાક પસંદ કરો</string>
+    <string name="get_suggestion_button">સૂચના મેળવો</string>
+    <string name="suggestion_result">સૂચના પરિણામ</string>
+    <string name="no_suggestion">કોઈ સૂચના ઉપલબ્ધ નથી</string>
+    <string name="predict_button">આગાહી કરો</string>
+    <string name="suggestions_placeholder">અહીં સૂચનાઓ…</string>
+
+    <!-- Soil Types -->
+    <string name="soil_sandy">રેતાળ</string>
+    <string name="soil_loamy">ફળદ્રુપ</string>
+    <string name="soil_clayey">ચીકણી</string>
+    <string name="soil_silty">કાંપવાળી</string>
+
+    <!-- Weather Types -->
+    <string name="weather_sunny">સૂર્યપ્રકાશ</string>
+    <string name="weather_rainy">વરસાદી</string>
+    <string name="weather_cloudy">વાદળછાયું</string>
+    <string name="weather_cold">ઠંડું</string>
+
+    <!-- Crops -->
+    <string name="crop_wheat">ઘઉં</string>
+    <string name="crop_mango">કેરી</string>
+    <string name="crop_apple">સફરજન</string>
+    <string name="crop_maize">મકાઈ</string>
+    <string name="crop_rice">ચોખા</string>
+    <string name="crop_cotton">કપાસ</string>
+    <string name="crop_sugarcane">શેરડી</string>
+
+    <!-- Regions -->
+    <string name="region_1">પ્રદેશ 1</string>
+    <string name="region_2">પ્રદેશ 2</string>
+    <string name="region_3">પ્રદેશ 3</string>
+
+    <!-- Health Tips Screen -->
+    <string name="health_tips_title">આરોગ્ય ટિપ્સ</string>
+    <string name="health_fever">તાવ</string>
+    <string name="health_fever_tip">હાઇડ્રેટેડ રહો. કપાળ પર ભીનું કાપડ મૂકો.</string>
+    <string name="health_diarrhea">ઝાડા</string>
+    <string name="health_diarrhea_tip">ORS મિશ્રણ લો, આરોગ્ય કાર્યકરને મળો.</string>
+    <string name="health_cough">ઉધરસ</string>
+    <string name="health_cough_tip">હળદર દૂધ + ગરમ પ્રવાહી.</string>
+    <string name="health_cuts">ઘા</string>
+    <string name="health_cuts_tip">સ્વચ્છ પાણીથી ધોવા, ડેટોલ લગાવો.</string>
+
+    <!-- Language Selection Screen -->
+    <string name="language_selection_title">ભાષા પસંદ કરો</string>
+    <string name="language_subtitle">તમારી પસંદીદા ભાષા પસંદ કરો</string>
+    <string name="language_english">English</string>
+    <string name="language_hindi">हिन्दी (Hindi)</string>
+    <string name="language_marathi">मराठी (Marathi)</string>
+    <string name="language_gujarati">ગુજરાતી (Gujarati)</string>
+    <string name="language_punjabi">ਪੰਜਾਬੀ (Punjabi)</string>
+    <string name="language_bengali">বাংলা (Bengali)</string>
+    <string name="language_tamil">தமிழ் (Tamil)</string>
+    <string name="language_telugu">తెలుగు (Telugu)</string>
+    <string name="language_kannada">ಕನ್ನಡ (Kannada)</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_coming_soon">સેટિંગ્સ સ્ક્રીન ટૂંક સમયમાં આવી રહી છે…</string>
+
+    <!-- Common -->
+    <string name="back">પાછળ</string>
+    <string name="submit">સબમિટ કરો</string>
+    <string name="cancel">રદ કરો</string>
+    <string name="ok">બરાબર</string>
+    <string name="loading">લોડ થઈ રહ્યું છે…</string>
+    <string name="error">ભૂલ</string>
+
+    <!-- Content Descriptions -->
+    <string name="cd_news_image">કૃષિ સમાચાર છબી</string>
+    <string name="cd_background_image">પૃષ્ઠભૂમિ છબી</string>
+    <string name="cd_home_icon">હોમ આયકોન</string>
+    <string name="cd_suggest_icon">સૂચના આયકોન</string>
+    <string name="cd_language_icon">ભાષા આયકોન</string>
+    <string name="cd_help_icon">મદદ આયકોન</string>
+    <string name="cd_settings_icon">સેટિંગ્સ આયકોન</string>
+    <string name="cd_back_icon">પાછળ</string>
+</resources>
+

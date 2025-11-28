@@ -39,7 +39,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -82,7 +84,12 @@ class MainActivity : AppCompatActivity() {
                         composable("health_tips"){
                             HealthTipsScreen(navController)
                         }
-                        // later you can add farmingTips, healthTips, etc.
+                        composable("language") {
+                            LanguageSelectionScreen(navController)
+                        }
+                        composable("settings") {
+                            SettingsScreen(navController)
+                        }
                     }
                 }
             }
@@ -92,15 +99,16 @@ class MainActivity : AppCompatActivity() {
 
 @Composable
 fun HomeScreen(navController: NavController) {
+    val context = LocalContext.current
     Scaffold(
         bottomBar = {
-            BottomNavBar(selectedItem = "Home") { selected ->
+            BottomNavBar(selectedItem = stringResource(R.string.nav_home)) { selected ->
                 when (selected) {
-                    "Home" -> navController.navigate("home")
-                    "Suggest" -> navController.navigate("suggestion")
-                    "Language" -> navController.navigate("language")
-                    "Help" -> navController.navigate("help")
-                    "Settings" -> navController.navigate("settings")
+                    context.getString(R.string.nav_home) -> navController.navigate("home")
+                    context.getString(R.string.nav_suggest) -> navController.navigate("suggestion")
+                    context.getString(R.string.nav_language) -> navController.navigate("language")
+                    context.getString(R.string.nav_help) -> navController.navigate("health_tips")
+                    context.getString(R.string.nav_settings) -> navController.navigate("settings")
                 }
             }
         }
@@ -128,7 +136,7 @@ fun HomeScreen(navController: NavController) {
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "AgriCare",
+                        text = stringResource(R.string.app_name),
                         color = Color.White,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold
@@ -142,7 +150,7 @@ fun HomeScreen(navController: NavController) {
                         .padding(8.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = "News!", fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                    Text(text = stringResource(R.string.news_title), fontWeight = FontWeight.Bold, fontSize = 15.sp)
                 }
                 // Call the stable NewsCarousel composable
                 Spacer(modifier = Modifier.height(25.dp))
@@ -173,11 +181,11 @@ fun HomeScreen(navController: NavController) {
                             containerColor = Color(0xFFA3DC9A)
                         )
                     ){
-                        Text(text = "Get Smart Suggestions",
+                        Text(text = stringResource(R.string.smart_suggestions_button),
                             color = Color.Black, fontWeight = FontWeight.Bold, fontSize = 18.sp)
                     }
                     Text(
-                        text = "What crop should I grow?",
+                        text = stringResource(R.string.smart_suggestions_subtitle),
                         fontSize = 12.sp,
                         color = Color.DarkGray
                     )
@@ -195,11 +203,11 @@ fun HomeScreen(navController: NavController) {
                             containerColor = Color(0xFFA3DC9A)
                         )
                     ) {
-                        Text(text = "Farming Tips",
+                        Text(text = stringResource(R.string.farming_tips_button),
                             color = Color.Black, fontWeight = FontWeight.Bold,fontSize = 18.sp)
                     }
                     Text(
-                        text = "Soil Care, Pest Control, Weather Tips",
+                        text = stringResource(R.string.farming_tips_subtitle),
                         fontSize = 12.sp,
                         color = Color.DarkGray
                     )
@@ -217,18 +225,18 @@ fun HomeScreen(navController: NavController) {
                             containerColor = Color(0xFFA3DC9A)
                         )
                     ) {
-                        Text(text = "Health Tips",
+                        Text(text = stringResource(R.string.health_tips_button),
                             color = Color.Black, fontWeight = FontWeight.Bold, fontSize = 18.sp)
                     }
                     Text(
-                        text = "Fever, Cough, First Aid, Dehydration, etc,",
+                        text = stringResource(R.string.health_tips_subtitle),
                         fontSize = 12.sp,
                         color = Color.DarkGray
                     )
 
 
                     Text(
-                        text = "Sync Data",
+                        text = stringResource(R.string.sync_data),
                         fontSize = 14.sp,
                         color = Color.Black,
                         fontWeight = FontWeight.Bold,
@@ -236,7 +244,7 @@ fun HomeScreen(navController: NavController) {
                             .padding(top = 18.dp)
                     )
                     Text(
-                        text = "Last Sync: 2023-07-26",
+                        text = stringResource(R.string.last_sync),
                         fontSize = 12.sp,
                         color = Color.DarkGray,
                         fontWeight = FontWeight.Bold,
