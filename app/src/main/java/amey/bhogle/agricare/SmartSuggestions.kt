@@ -1,7 +1,6 @@
 package amey.bhogle.agricare
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -47,12 +46,11 @@ import androidx.navigation.compose.rememberNavController
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SmartSuggestions(navController: NavController){
+    val context = LocalContext.current
     val regionOptions = regionWeatherMap.keys.toList()
     val soilOptions = soilTypeMap.keys.toList()
     val weatherOptions = listOf("Kharif (Monsoon)", "Rabi (Winter)", "Zaid (Summer)")
     val cropOptions = listOf("Apple", "Banana", "Coffee", "Jute", "Mango", "Maize", "Orange", "Rice", "Wheat")
-
-    val context = LocalContext.current
     val recommender = remember { CropRecommender(context) }
 
     var selectedRegion by remember { mutableStateOf("") }
@@ -71,15 +69,15 @@ fun SmartSuggestions(navController: NavController){
     var predictionResultColor by remember { mutableStateOf(Color.Gray) }
 
     Scaffold(
-        topBar = { AppTopBar(navController, title = "Smart Suggestions") },
+        topBar = { AppTopBar(navController, title = stringResource(R.string.smart_suggestions_title)) },
         bottomBar = {
             BottomNavBar(selectedItem = stringResource(R.string.nav_suggest)) { selected ->
                 when (selected) {
-                    "Home" -> navController.navigate("home")
-                    "Suggest" -> navController.navigate("smart_suggestions")
-                    "Language" -> navController.navigate("language")
-                    "Help" -> navController.navigate("help")
-                    "Settings" -> navController.navigate("settings")
+                    context.getString(R.string.nav_home) -> navController.navigate("home")
+                    context.getString(R.string.nav_suggest) -> navController.navigate("suggestion")
+                    context.getString(R.string.nav_language) -> navController.navigate("language")
+                    context.getString(R.string.nav_help) -> navController.navigate("help")
+                    context.getString(R.string.nav_settings) -> navController.navigate("settings")
                 }
             }
         }
@@ -112,7 +110,7 @@ fun SmartSuggestions(navController: NavController){
                         value = selectedRegion,
                         onValueChange = {},
                         readOnly = true,
-                        label = { Text("Select Region") },
+                        label = { Text(stringResource(R.string.select_region)) },
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedRegion) },
                         modifier = Modifier
                             .menuAnchor(MenuAnchorType.PrimaryNotEditable, enabled = true)
@@ -155,7 +153,7 @@ fun SmartSuggestions(navController: NavController){
                         value = selectedSoil,
                         onValueChange = {},
                         readOnly = true,
-                        label = { Text("Select Soil Type") },
+                        label = { Text(stringResource(R.string.select_soil_type)) },
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedSoil) },
                         modifier = Modifier
                             .menuAnchor(MenuAnchorType.PrimaryNotEditable, enabled = true)
@@ -197,7 +195,7 @@ fun SmartSuggestions(navController: NavController){
                         value = selectedWeather,
                         onValueChange = {},
                         readOnly = true,
-                        label = { Text("Select Weather") },
+                        label = { Text(stringResource(R.string.select_weather)) },
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedWeather) },
                         modifier = Modifier
                             .menuAnchor(MenuAnchorType.PrimaryNotEditable, enabled = true)
@@ -239,8 +237,8 @@ fun SmartSuggestions(navController: NavController){
                         value = selectedCrop,
                         onValueChange = {},
                         readOnly = true,
-                        label = { Text("Select Crop") },
-                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedWeather) },
+                        label = { Text(stringResource(R.string.select_crop)) },
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedCrop) },
                         modifier = Modifier
                             .menuAnchor(MenuAnchorType.PrimaryNotEditable, enabled = true)
                             .fillMaxWidth(0.9f),
@@ -318,7 +316,7 @@ fun SmartSuggestions(navController: NavController){
                     )
                 ) {
                     Text(
-                        text = "Predict",
+                        text = stringResource(R.string.predict_button),
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold
                     )
