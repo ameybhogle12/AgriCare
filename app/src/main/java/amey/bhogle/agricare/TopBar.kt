@@ -5,6 +5,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -23,7 +24,7 @@ fun AppTopBar(navController: NavController, title: String) {
                 }) {
                     androidx.compose.material3.Icon(
                         painter = painterResource(id = R.drawable.baseline_arrow_back_24),
-                        contentDescription = "Back",
+                        contentDescription = stringResource(R.string.cd_back_icon),
                         tint = Color.White
                     )
                 }

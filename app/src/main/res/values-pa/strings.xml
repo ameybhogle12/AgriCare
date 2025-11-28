@@ -1,0 +1,105 @@
+<resources>
+    <string name="app_name">ਐਗਰੀਕੇਅਰ</string>
+    <string name="Title">ਐਗਰੀਕੇਅਰ</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">ਹੋਮ</string>
+    <string name="nav_suggest">ਸੁਝਾਅ</string>
+    <string name="nav_language">ਭਾਸ਼ਾ</string>
+    <string name="nav_help">ਮਦਦ</string>
+    <string name="nav_settings">ਸੈਟਿੰਗਾਂ</string>
+
+    <!-- Home Screen -->
+    <string name="news_title">ਖ਼ਬਰਾਂ!</string>
+    <string name="smart_suggestions_button">ਸਮਾਰਟ ਸੁਝਾਅ ਪ੍ਰਾਪਤ ਕਰੋ</string>
+    <string name="smart_suggestions_subtitle">ਮੈਨੂੰ ਕਿਹੜੀ ਫ਼ਸਲ ਉਗਾਉਣੀ ਚਾਹੀਦੀ ਹੈ?</string>
+    <string name="farming_tips_button">ਖੇਤੀ ਟਿੱਪਸ</string>
+    <string name="farming_tips_subtitle">ਮਿੱਟੀ ਦੀ ਦੇਖਭਾਲ, ਕੀਟ ਨਿਯੰਤਰਣ, ਮੌਸਮ ਟਿੱਪਸ</string>
+    <string name="health_tips_button">ਸਿਹਤ ਟਿੱਪਸ</string>
+    <string name="health_tips_subtitle">ਬੁਖਾਰ, ਖੰਘ, ਪਹਿਲੀ ਸਹਾਇਤਾ, ਪਾਣੀ ਦੀ ਕਮੀ, ਆਦਿ</string>
+    <string name="sync_data">ਡੇਟਾ ਸਿੰਕ ਕਰੋ</string>
+    <string name="last_sync">ਆਖਰੀ ਸਿੰਕ: 2023-07-26</string>
+
+    <!-- Smart Suggestions Screen -->
+    <string name="smart_suggestions_title">ਸਮਾਰਟ ਸੁਝਾਅ</string>
+    <string name="select_region">ਖੇਤਰ ਚੁਣੋ</string>
+    <string name="select_soil_type">ਮਿੱਟੀ ਦੀ ਕਿਸਮ ਚੁਣੋ</string>
+    <string name="select_weather">ਮੌਸਮ ਚੁਣੋ</string>
+    <string name="select_crop">ਫ਼ਸਲ ਚੁਣੋ</string>
+    <string name="get_suggestion_button">ਸੁਝਾਅ ਪ੍ਰਾਪਤ ਕਰੋ</string>
+    <string name="suggestion_result">ਸੁਝਾਅ ਨਤੀਜਾ</string>
+    <string name="no_suggestion">ਕੋਈ ਸੁਝਾਅ ਉਪਲਬਧ ਨਹੀਂ</string>
+    <string name="predict_button">ਭਵਿੱਖਬਾਣੀ ਕਰੋ</string>
+    <string name="suggestions_placeholder">ਇੱਥੇ ਸੁਝਾਅ…</string>
+
+    <!-- Soil Types -->
+    <string name="soil_sandy">ਰੇਤਲੀ</string>
+    <string name="soil_loamy">ਉਪਜਾਊ</string>
+    <string name="soil_clayey">ਚਿਕਨੀ</string>
+    <string name="soil_silty">ਗਾਦ ਵਾਲੀ</string>
+
+    <!-- Weather Types -->
+    <string name="weather_sunny">ਧੁੱਪ</string>
+    <string name="weather_rainy">ਬਰਸਾਤ</string>
+    <string name="weather_cloudy">ਬੱਦਲਵਾਈ</string>
+    <string name="weather_cold">ਠੰਡ</string>
+
+    <!-- Crops -->
+    <string name="crop_wheat">ਕਣਕ</string>
+    <string name="crop_mango">ਅੰਬ</string>
+    <string name="crop_apple">ਸੇਬ</string>
+    <string name="crop_maize">ਮੱਕੀ</string>
+    <string name="crop_rice">ਚਾਵਲ</string>
+    <string name="crop_cotton">ਕਪਾਹ</string>
+    <string name="crop_sugarcane">ਗੰਨਾ</string>
+
+    <!-- Regions -->
+    <string name="region_1">ਖੇਤਰ 1</string>
+    <string name="region_2">ਖੇਤਰ 2</string>
+    <string name="region_3">ਖੇਤਰ 3</string>
+
+    <!-- Health Tips Screen -->
+    <string name="health_tips_title">ਸਿਹਤ ਟਿੱਪਸ</string>
+    <string name="health_fever">ਬੁਖਾਰ</string>
+    <string name="health_fever_tip">ਹਾਈਡ੍ਰੇਟ ਰਹੋ। ਮੱਥੇ ‘ਤੇ ਗਿੱਲਾ ਕੱਪੜਾ ਰੱਖੋ।</string>
+    <string name="health_diarrhea">ਦਸਤ</string>
+    <string name="health_diarrhea_tip">ORS ਮਿਸ਼ਰਣ ਲਓ, ਸਿਹਤ ਕਰਮਚਾਰੀ ਨੂੰ ਮਿਲੋ।</string>
+    <string name="health_cough">ਖੰਘ</string>
+    <string name="health_cough_tip">ਹਲਦੀ ਵਾਲਾ ਦੁੱਧ + ਗਰਮ ਤਰਲ।</string>
+    <string name="health_cuts">ਕੱਟ</string>
+    <string name="health_cuts_tip">ਸਾਫ਼ ਪਾਣੀ ਨਾਲ ਧੋਵੋ, ਡੈਟੌਲ ਲਗਾਓ।</string>
+
+    <!-- Language Selection Screen -->
+    <string name="language_selection_title">ਭਾਸ਼ਾ ਚੁਣੋ</string>
+    <string name="language_subtitle">ਆਪਣੀ ਪਸੰਦੀਦਾ ਭਾਸ਼ਾ ਚੁਣੋ</string>
+    <string name="language_english">English</string>
+    <string name="language_hindi">हिन्दी (Hindi)</string>
+    <string name="language_marathi">मराठी (Marathi)</string>
+    <string name="language_gujarati">ગુજરાતી (Gujarati)</string>
+    <string name="language_punjabi">ਪੰਜਾਬੀ (Punjabi)</string>
+    <string name="language_bengali">বাংলা (Bengali)</string>
+    <string name="language_tamil">தமிழ் (Tamil)</string>
+    <string name="language_telugu">తెలుగు (Telugu)</string>
+    <string name="language_kannada">ಕನ್ನಡ (Kannada)</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_coming_soon">ਸੈਟਿੰਗਾਂ ਸਕ੍ਰੀਨ ਜਲਦੀ ਆ ਰਹੀ ਹੈ…</string>
+
+    <!-- Common -->
+    <string name="back">ਵਾਪਸ</string>
+    <string name="submit">ਜਮ੍ਹਾਂ ਕਰੋ</string>
+    <string name="cancel">ਰੱਦ ਕਰੋ</string>
+    <string name="ok">ਠੀਕ ਹੈ</string>
+    <string name="loading">ਲੋਡ ਹੋ ਰਿਹਾ ਹੈ…</string>
+    <string name="error">ਗਲਤੀ</string>
+
+    <!-- Content Descriptions -->
+    <string name="cd_news_image">ਖੇਤੀਬਾੜੀ ਖ਼ਬਰਾਂ ਤਸਵੀਰ</string>
+    <string name="cd_background_image">ਪਿਛੋਕੜ ਤਸਵੀਰ</string>
+    <string name="cd_home_icon">ਹੋਮ ਆਈਕਾਨ</string>
+    <string name="cd_suggest_icon">ਸੁਝਾਅ ਆਈਕਾਨ</string>
+    <string name="cd_language_icon">ਭਾਸ਼ਾ ਆਈਕਾਨ</string>
+    <string name="cd_help_icon">ਮਦਦ ਆਈਕਾਨ</string>
+    <string name="cd_settings_icon">ਸੈਟਿੰਗਾਂ ਆਈਕਾਨ</string>
+    <string name="cd_back_icon">ਵਾਪਸ</string>
+</resources>

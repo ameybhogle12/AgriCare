@@ -14,12 +14,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun BottomNavBar(selectedItem: String, onItemSelected: (String) -> Unit){
-    val  items = listOf("Language", "Home", "Suggest", "Help", "Settings")
+    val context = LocalContext.current
+    val items = listOf(
+        context.getString(R.string.nav_language),
+        context.getString(R.string.nav_home),
+        context.getString(R.string.nav_suggest),
+        context.getString(R.string.nav_help),
+        context.getString(R.string.nav_settings)
+    )
 
     Box(modifier = Modifier
         .fillMaxWidth()
@@ -33,30 +42,33 @@ fun BottomNavBar(selectedItem: String, onItemSelected: (String) -> Unit){
                     onClick = { onItemSelected(item) },
                     icon = {
                         when (item) {
-                            "Language" -> Icon(
+                            context.getString(R.string.nav_language) -> Icon(
                                 painter = painterResource(id = R.drawable.language_icon),
-                                contentDescription = "Language Icon",
+                                contentDescription = stringResource(R.string.cd_language_icon),
                                 modifier = Modifier.size(24.dp)
                             )
 
-                            "Home" -> Icon(
+                            context.getString(R.string.nav_home) -> Icon(
                                 painter = painterResource(id = R.drawable.home_icon),
-                                contentDescription = "Home Icon", modifier = Modifier.size(24.dp)
+                                contentDescription = stringResource(R.string.cd_home_icon),
+                                modifier = Modifier.size(24.dp)
                             )
 
-                            "Suggest" -> Icon(
+                            context.getString(R.string.nav_suggest) -> Icon(
                                 painter = painterResource(id = R.drawable.suggest_icon),
-                                contentDescription = "Suggest Icon", modifier = Modifier.size(24.dp)
+                                contentDescription = stringResource(R.string.cd_suggest_icon),
+                                modifier = Modifier.size(24.dp)
                             )
 
-                            "Help" -> Icon(
+                            context.getString(R.string.nav_help) -> Icon(
                                 painter = painterResource(id = R.drawable.help_icon),
-                                contentDescription = "Help Icon", modifier = Modifier.size(24.dp)
+                                contentDescription = stringResource(R.string.cd_help_icon),
+                                modifier = Modifier.size(24.dp)
                             )
 
-                            "Settings" -> Icon(
+                            context.getString(R.string.nav_settings) -> Icon(
                                 painter = painterResource(id = R.drawable.setting_icon),
-                                contentDescription = "Settings Icon",
+                                contentDescription = stringResource(R.string.cd_settings_icon),
                                 modifier = Modifier.size(24.dp)
                             )
                         }

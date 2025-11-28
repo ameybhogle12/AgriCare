@@ -24,7 +24,9 @@ import androidx.compose.ui.draw.blur // Import for the blur modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -36,25 +38,41 @@ import androidx.navigation.compose.rememberNavController
 //@Preview(showBackground = true)
 @Composable
 fun HealthTipsScreen(navController: NavController) {
-
+    val context = LocalContext.current
 
     val tips = listOf(
-        HealthTip("Fever", "Stay hydrated. Wet cloth on forehead.", R.drawable.fever),
-        HealthTip("Diarrhea", "ORS mix, visit health worker.", R.drawable.ors),
-        HealthTip("Cough", "Turmeric milk + warm fluids.", R.drawable.turmericmilk),
-        HealthTip("Cuts", "Wash with clean water, apply Dettol.", R.drawable.dettol)
+        HealthTip(
+            context.getString(R.string.health_fever),
+            context.getString(R.string.health_fever_tip),
+            R.drawable.fever
+        ),
+        HealthTip(
+            context.getString(R.string.health_diarrhea),
+            context.getString(R.string.health_diarrhea_tip),
+            R.drawable.ors
+        ),
+        HealthTip(
+            context.getString(R.string.health_cough),
+            context.getString(R.string.health_cough_tip),
+            R.drawable.turmericmilk
+        ),
+        HealthTip(
+            context.getString(R.string.health_cuts),
+            context.getString(R.string.health_cuts_tip),
+            R.drawable.dettol
+        )
     )
 
     Scaffold(
-        topBar = { AppTopBar(navController, title = "Health Tips") },
+        topBar = { AppTopBar(navController, title = stringResource(R.string.health_tips_title)) },
         bottomBar = {
-            BottomNavBar(selectedItem = "") {selected ->
+            BottomNavBar(selectedItem = stringResource(R.string.nav_help)) { selected ->
                 when (selected) {
-                    "Home" -> navController.navigate("home")
-                    "Suggest" -> navController.navigate("smart_suggestions")
-                    "Language" -> navController.navigate("language")
-                    "Help" -> navController.navigate("help")
-                    "Settings" -> navController.navigate("settings")
+                    context.getString(R.string.nav_home) -> navController.navigate("home")
+                    context.getString(R.string.nav_suggest) -> navController.navigate("suggestion")
+                    context.getString(R.string.nav_language) -> navController.navigate("language")
+                    context.getString(R.string.nav_help) -> navController.navigate("health_tips")
+                    context.getString(R.string.nav_settings) -> navController.navigate("settings")
                 }
             }
         }
@@ -65,7 +83,7 @@ fun HealthTipsScreen(navController: NavController) {
         ) {
             Image(
                 painter = painterResource(id = R.drawable.background),
-                contentDescription = "BackGround Image",
+                contentDescription = stringResource(R.string.cd_background_image),
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop
             )
