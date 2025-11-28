@@ -61,7 +61,7 @@ fun BottomNavBar(selectedItem: String, onItemSelected: (String) -> Unit){
                             )
 
                             context.getString(R.string.nav_help) -> Icon(
-                                painter = painterResource(id = R.drawable.help_icon),
+                                painter = painterResource(id = R.drawable.baseline_medical_services_24),
                                 contentDescription = stringResource(R.string.cd_help_icon),
                                 modifier = Modifier.size(24.dp)
                             )

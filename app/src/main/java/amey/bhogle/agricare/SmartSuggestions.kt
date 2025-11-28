@@ -87,7 +87,7 @@ fun SmartSuggestions(navController: NavController){
                     context.getString(R.string.nav_home) -> navController.navigate("home")
                     context.getString(R.string.nav_suggest) -> navController.navigate("suggestion")
                     context.getString(R.string.nav_language) -> navController.navigate("language")
-                    context.getString(R.string.nav_help) -> navController.navigate("help")
+                    context.getString(R.string.nav_help) -> navController.navigate("health_tips")
                     context.getString(R.string.nav_settings) -> navController.navigate("settings")
                 }
             }

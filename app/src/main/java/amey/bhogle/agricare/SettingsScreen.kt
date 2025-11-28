@@ -36,6 +36,7 @@ fun SettingsScreen(navController: NavController) {
                     context.getString(R.string.nav_language) -> navController.navigate("language")
                     context.getString(R.string.nav_help) -> navController.navigate("health_tips")
                     context.getString(R.string.nav_settings) -> navController.navigate("settings")
+                    context.getString(R.string.nav_help) -> navController.navigate("help")
                 }
             }
         }
